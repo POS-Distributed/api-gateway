@@ -1,0 +1,28 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: bam-api-gateway
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8700/eureka
+
+  config:
+#    import: optional:configserver:http://localhost:8888/
+    import: "optional:configserver:"
+  profiles:
+    active: testing
+  cloud:
+    config:
+      enabled: true
+      label: main
+      debug: true
+      uri: http://localhost:8888/
+    gateway:
+      routes:
+        - id: bam-eureka-client
+          uri: lb://bam-eureka-client
+          predicates:
+            - Path=/employees/**
